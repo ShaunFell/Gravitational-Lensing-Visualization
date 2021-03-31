@@ -1,4 +1,4 @@
-# Gravitation Lensing Visualization
+# Gravitational Lensing Visualization
 
 Script visualizes the images created by a lensing object (such as a schwarzschild BH) of a distant source object (such as a galaxy). To execute the script, just run 
 ```shell
