@@ -7,3 +7,10 @@ python Grav_Lensing.py
 
 
 Feel free to add things to the script or message me for comments, questions, etc.
+
+
+
+
+# Gravitationally lensing images
+
+Script takes an input image and calculates the lensing due to a schwarzschild black hole of mass 10^11 solar masses at 3000 parsecs. Work in progress
