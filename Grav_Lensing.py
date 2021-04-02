@@ -9,15 +9,20 @@ import random
 import numpy as np
 plt.style.use('grayscale')
 
+
+
 npoints = 5000
 angle = [random.uniform(0,1)*np.pi*2 for i in np.arange(npoints)]
 radius_ran = [random.uniform(0,1) for i in np.arange(npoints)]
 x = lambda center_x, radius: [radius*radius_ran[i]*np.cos(angle[i]) + center_x for i in np.arange(npoints)]
 y = lambda center_y, radius: [radius*radius_ran[i]*np.sin(angle[i]) + center_y for i in np.arange(npoints)]
 
-D_L = 5000 #pc
-D_S = 2000 #pc
-D_LS = np.abs(D_S-D_L) #pc. distance from source to hole
+
+# Main Calculations
+
+D_S = 5000 #parsecs
+D_L = 2000 #parsecs
+D_LS = np.abs(D_S-D_L) #parsecs. distance from source to hole
 G = c.G.value #gravitational constant
 M = 10**11 #solar masses. Mass of lensing hole
 C = c.c.value #m/s
@@ -35,6 +40,9 @@ theta2 = ((beta/2) - np.sqrt(((beta**2)/4) + ((4*G*M*D_LS)/((C**2)*D_L*D_S)))) #
 lensed_one_x, lensed_one_y = circle["x"]*theta1/beta, circle["y"]*theta1/beta #First lensed image
 lensed_two_x, lensed_two_y = circle["x"]*theta2/beta, circle["y"]*theta2/beta #Second lensed image
 
+
+
+#Setup plotting
 
 max_x = np.max(R_E)*(1+0.2) #Bounds of plot
 max_y = np.max(R_E)*(1+0.2)
@@ -177,19 +185,6 @@ ax.legend()
 #plt.tight_layout()
 plt.show()
 
-## Future work
-# Lense pictures?
-
-"""
-image_filename = 
-
-img_pixels = img.imread(image_filename)
-
-
-
-
-
-"""
 
 
 
