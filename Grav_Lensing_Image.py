@@ -10,7 +10,6 @@ import numpy as np
 import math
 from multiprocessing import Pool
 import os
-plt.style.use('grayscale')
 
 radtoarcsec = 206265
 arcsectorad = 1/radtoarcsec
@@ -88,10 +87,22 @@ def lensed_image(imagedata):
 """
 
 
-with Pool() as p:
-    temp = p.map(get_lensed_pixel, np.ndindex((image_Mat_Len, image_Mat_Len))) #generate lensed image as a 1D array
+def get_lensed_pixel(indexlist):
+    if (indexlist[0]==image_Mat_Len/2 and indexlist[1]==image_Mat_Len/2):
+        return np.array([0,0,0])
+    inx1, inx2 = invlensed_pixel(indexlist)
+    if inx1<0 or inx2<0 or inx1>image_Mat_Len-1 or inx2>image_Mat_Len-1 or math.sqrt((inx1-image_Mat_Len/2)**2+(inx2-image_Mat_Len/2)**2)>image_Mat_Len:
+        return np.array([0,0,0])
+    else:
+        return image_data[inx1,inx2]
+
+def generate_lensed_image():
+    with Pool() as P:
+        temp = P.map(get_lensed_pixel, np.ndindex((image_Mat_Len, image_Mat_Len)))
+    return np.reshape(temp, (image_Mat_Len, image_Mat_Len,3))
+
     
-lensedimage = np.reshape(temp, (image_Mat_Len, image_Mat_Len,3)) #reshape 1D array to an NxNx3 matrix
+lensedimage = generate_lensed_image() #
 
 
 
