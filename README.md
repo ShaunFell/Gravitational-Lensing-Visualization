@@ -21,4 +21,4 @@ Work in progress
 
 ## Example
 
-![test1](https://user-images.githubusercontent.com/37465343/113477616-75a05300-9483-11eb-9463-fb2e0dfae3c0.png)
+![image](https://user-images.githubusercontent.com/37465343/113479331-c79aa600-948e-11eb-810d-a22bc331a459.png)
