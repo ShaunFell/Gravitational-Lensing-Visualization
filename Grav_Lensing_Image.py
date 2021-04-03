@@ -8,7 +8,7 @@ import astropy.units as u
 import random
 import numpy as np
 import math
-from deco import concurrent, synchronized
+from multiprocessing import Pool
 import os
 plt.style.use('grayscale')
 
@@ -61,7 +61,19 @@ def invlensed_pixel(pixel_list):
     
     return [round(source_pix[0]), round(source_pix[1])]
 
+def get_lensed_pixel(indexlist):
+    if (indexlist[0]==image_Mat_Len/2 and indexlist[1]==image_Mat_Len/2):
+        return np.array([0,0,0])
+    inx1, inx2 = invlensed_pixel(indexlist)
+    if inx1<0 or inx2<0 or inx1>image_Mat_Len-1 or inx2>image_Mat_Len-1 or math.sqrt((inx1-image_Mat_Len/2)**2+(inx2-image_Mat_Len/2)**2)>image_Mat_Len:
+        return np.array([0,0,0])
+    else:
+        return image_data[inx1,inx2]
 
+
+
+
+"""
 def lensed_image(imagedata):
     ret = np.zeros(imagedata.shape,dtype=np.uint8)
     for i in range(image_Mat_Len):
@@ -73,16 +85,25 @@ def lensed_image(imagedata):
                 continue # if lensed pixel index is outside the range of the matrix indices, skip loop iteration
             ret[i,j] = imagedata[inverse_lensed_pix[0], inverse_lensed_pix[1]]
     return ret
+"""
 
-lensedimage = lensed_image(image_data)
+
+with Pool() as p:
+    temp = p.map(get_lensed_pixel, np.ndindex((image_Mat_Len, image_Mat_Len))) #generate lensed image as a 1D array
+    
+lensedimage = np.reshape(temp, (image_Mat_Len, image_Mat_Len,3)) #reshape 1D array to an NxNx3 matrix
 
 
+
+#plot images
 fig = plt.figure(figsize=(20,20))
 fig.add_subplot(1,2,1)
 plt.imshow(image_data)
 plt.axis('off')
+plt.title('input')
 fig.add_subplot(1,2,2)
 plt.imshow(lensedimage)
 plt.gca().add_patch(ptch.Circle((image_Mat_Len/2, image_Mat_Len/2),radius=image_Mat_Len/10, color='black'))
 plt.axis('off')
+plt.title('output')
 plt.show()
